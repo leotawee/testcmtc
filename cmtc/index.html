@@ -31,6 +31,22 @@
     --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
     --sidebar-w:230px;
   }
+  html.dark{
+    --bg:#0f172a;
+    --card:#1e293b;
+    --line:#334155;
+    --text:#e2e8f0;
+    --muted:#94a3b8;
+    --accent:#60a5fa;
+    --accent-soft:rgba(96,165,250,.12);
+    --accent-mid:rgba(96,165,250,.35);
+    --danger:#f87171;
+    --danger-soft:rgba(248,113,113,.1);
+    --danger-mid:rgba(248,113,113,.35);
+    --ok:#4ade80;
+    --code-bg:#1e293b;
+    --shadow:0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
+  }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
   body{
@@ -39,6 +55,7 @@
     font-family:"IBM Plex Sans Thai",sans-serif;
     line-height:1.75;
     font-size:16px;
+    transition:background .2s ease, color .2s ease;
   }
 
   /* WHY: ใช้ Google Material Symbols (CDN เดียวกับ font) แทน unicode symbol ดิบๆ
@@ -200,6 +217,31 @@
     background:none; border:none; padding:0; color:var(--term-text);
     font-size:.85rem; line-height:1.6;
   }
+  .term-bar .copy-btn{
+    margin-left:auto;
+    font-family:"JetBrains Mono",monospace;
+    font-size:.7rem;
+    color:#9ca3af;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:6px;
+    padding:.2rem .6rem;
+    cursor:pointer;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .term-bar .copy-btn:hover{color:#e5e7eb; border-color:rgba(255,255,255,.35);}
+  .term-bar .copy-btn.copied{color:#4ade80; border-color:rgba(74,222,128,.4);}
+  .term-note{color:var(--muted); font-size:.8rem; margin:-.75rem 0 1.25rem;}
+  html.dark figure img{filter:brightness(.92);}
+  .theme-toggle{
+    position:fixed; top:1rem; right:1rem; z-index:50;
+    width:2.6rem; height:2.6rem; border-radius:999px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--card); border:1px solid var(--line); color:var(--muted);
+    cursor:pointer; box-shadow:var(--shadow);
+  }
+  .theme-toggle:hover{color:var(--accent); border-color:var(--accent-mid);}
+  .theme-toggle .material-symbols-outlined{font-size:1.25rem;}
 
   figure{margin:1.25rem 0 1.75rem;}
   figure img{width:100%; display:block; border-radius:10px; border:1px solid var(--line);}
@@ -278,8 +320,20 @@
     html{scroll-behavior:auto;}
   }
 </style>
+<script>
+  // ใส่ class dark ก่อน paint แรก กันหน้ากระพริบจากสว่างไปมืด
+  try{
+    const saved = localStorage.getItem('theme');
+    const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    if (dark) document.documentElement.classList.add('dark');
+  }catch(e){}
+</script>
 </head>
 <body>
+
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="สลับโหมดมืด/สว่าง">
+  <span class="material-symbols-outlined">dark_mode</span>
+</button>
 
 <header class="hero">
   <div class="tags"><span class="tag">GitLab</span><span class="tag">Docker</span><span class="tag">CI/CD</span></div>
@@ -494,8 +548,9 @@ docker run --name head-project -p 8080:80 head-project</code></pre>
       <p>เอา name หรือ ID ที่เห็นมาลบ container ทาง terminal</p>
       <div class="terminal">
         <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-label">bash</span></div>
-        <pre><code>docker rm head-project       # ใช้ name หรือ container ID ที่เห็นใน Docker Desktop ก็ได้</code></pre>
+        <pre><code>docker rm head-project</code></pre>
       </div>
+      <p class="term-note">ระบุชื่อหลังคำสั่งได้ทั้ง name หรือ container ID ที่เห็นใน Docker Desktop</p>
       <div class="callout">
         <span class="icon material-symbols-outlined">info</span>
         <div>ถ้า <code>docker rm head-project</code> ขึ้น <code>No such container</code> — แปลว่าตอน <code>docker run</code> ไม่ได้ใส่ <code>--name head-project</code> ไว้ container เลยชื่อสุ่ม (เช่น <code>modest_newton</code>) เอาชื่อที่เห็นในรูปด้านบนมาใช้แทนได้เลย เช่น <code>docker rm modest_newton</code></div>
@@ -618,10 +673,11 @@ git push</code></pre>
       </div>
       <div class="terminal">
         <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-label">docker-compose.yml</span></div>
-        <pre><code>    container_name: head_project_m6_web   # เดิม head_project_direct_web — ต้องไม่ซ้ำกัน
+        <pre><code>    container_name: head_project_m6_web
     ports:
-      - "9940:80"                         # เดิม "9900:80"</code></pre>
+      - "9940:80"</code></pre>
       </div>
+      <p class="term-note">เดิม container_name คือ <code>head_project_direct_web</code> และ ports คือ <code>"9900:80"</code> — ต้องแก้ให้ต่างจากของสายตรง กันชนกันบน server เดียวกัน</p>
 
       <div class="callout">
         <span class="icon material-symbols-outlined">info</span>
@@ -629,14 +685,14 @@ git push</code></pre>
       </div>
       <div class="terminal">
         <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-label">index.html</span></div>
-        <pre><code>const PORT_BASE = 9940;   // เดิม 9900 — ทุกคนใน STUDENTS จะได้ port = PORT_BASE + ลำดับ
-// sub: "...(port 9941-9965)"   footer: "...กลุ่ม ม.6"
+        <pre><code>const PORT_BASE = 9940;
 const STUDENTS = [
-  ["ชื่อ-สกุล คนที่ 1", "0XX"],   // → 9941
-  ["ชื่อ-สกุล คนที่ 2", "0XX"],   // → 9942
-  // ... ใส่ให้ครบ 25 คน (9941-9965)
+  ["ชื่อ-สกุล คนที่ 1", "0XX"],
+  ["ชื่อ-สกุล คนที่ 2", "0XX"],
+  // ... ใส่ให้ครบ 25 คน
 ];</code></pre>
       </div>
+      <p class="term-note">เดิม <code>PORT_BASE</code> คือ 9900 — port ของแต่ละคนคือ PORT_BASE + ลำดับ (คนแรก 9941 … คนที่ 25 = 9965) อีกจุดคือแก้ข้อความ sub เป็น "...(port 9941-9965)" และ footer เป็น "...กลุ่ม ม.6"</p>
       <div class="callout danger">
         <span class="icon material-symbols-outlined">warning</span>
         <div>ห้ามลืมแก้ <code>PORT_BASE</code> — ถ้าลืม nav ทุกอันจะลิงก์ผิด port ไปชนกับของสายตรง ทั้งที่หน้าเว็บ deploy สำเร็จปกติ (ไม่มี error ให้เห็น เพราะเป็นแค่เลข port ผิด ไม่ใช่ code พัง)</div>
@@ -693,6 +749,36 @@ const STUDENTS = [
   toc.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     if (window.innerWidth <= 900) { toc.classList.remove('open'); toggleText.textContent = 'สารบัญ — แตะเพื่อเปิด'; }
   }));
+
+  // dark mode toggle — เก็บค่าไว้ localStorage ตามที่ head script อ่าน
+  const themeBtn = document.getElementById('themeToggle');
+  const themeIcon = themeBtn.querySelector('.material-symbols-outlined');
+  const paintIcon = () => { themeIcon.textContent = document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode'; };
+  paintIcon();
+  themeBtn.addEventListener('click', () => {
+    const dark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    paintIcon();
+  });
+
+  // ปุ่ม Copy บน terminal block ที่ label เป็น bash
+  document.querySelectorAll('.terminal').forEach(t => {
+    const label = t.querySelector('.term-label');
+    if (!label || label.textContent !== 'bash') return;
+    const pre = t.querySelector('pre');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+      }).catch(() => { btn.textContent = 'ล้มเหลว'; });
+    });
+    t.querySelector('.term-bar').appendChild(btn);
+  });
 </script>
 
 </body>

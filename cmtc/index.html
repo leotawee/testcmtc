@@ -481,7 +481,7 @@
         <img src="manual-headproject-files/image12.png" alt="VS Code เปิด head-project เห็นไฟล์ทั้งหมดใน explorer" />
         <figcaption>หน้าตาโปรเจกต์เปิดใน VS Code — ไฟล์ครบตามโครงสร้าง</figcaption>
       </figure>
-      <p>ดูไฟล์จริงทั้งหมดได้ที่ repo GitLab (public — เปิดดูได้เลยไม่ต้องขอสิทธิ์): <a href="https://gitlab.com/leotawee/head-project/-/tree/main" target="_blank" rel="noopener">gitlab.com/leotawee/head-project</a></p>
+      <p>ดูไฟล์จริงทั้งหมดได้ที่ repo GitLab (public — เปิดดูได้เลยไม่ต้องขอสิทธิ์): <a href="https://gitlab.com/leotawee/my-project/-/tree/main" target="_blank" rel="noopener">gitlab.com/leotawee/my-project</a></p>
     </section>
 
     <section class="step" id="s5">
@@ -494,7 +494,7 @@ COPY . /usr/share/nginx/html</code></pre>
       </div>
       <figure>
         <img src="manual-headproject-files/image13.png" alt="เนื้อหา Dockerfile ใน VS Code" />
-        <figcaption>Dockerfile จริงที่เขียนไว้ — <a href="https://gitlab.com/leotawee/head-project/-/blob/main/Dockerfile" target="_blank" rel="noopener">ดูโค้ดจริงใน repo</a></figcaption>
+        <figcaption>Dockerfile จริงที่เขียนไว้ — <a href="https://gitlab.com/leotawee/my-project/-/blob/main/Dockerfile" target="_blank" rel="noopener">ดูโค้ดจริงใน repo</a></figcaption>
       </figure>
       <div class="callout">
         <span class="icon material-symbols-outlined">info</span>
@@ -581,7 +581,7 @@ docker run --name head-project -p 8080:80 head-project</code></pre>
       <h2><span class="step-no">7</span>Deploy ขึ้น server จริง</h2>
       <p>เลือกวิธี deploy ได้ 2 แบบ</p>
       <ul>
-        <li><strong>แบบที่ 1 CI/CD อัตโนมัติ</strong> — เขียน <a href="https://gitlab.com/leotawee/head-project/-/blob/main/.gitlab-ci.yml" target="_blank" rel="noopener"><code>.gitlab-ci.yml</code></a> ให้ SSH เข้า server แล้วรัน <code>docker compose up -d --build</code> ทุกครั้งที่ push เข้า branch main</li>
+        <li><strong>แบบที่ 1 CI/CD อัตโนมัติ</strong> — เขียน <a href="https://gitlab.com/leotawee/my-project/-/blob/main/.gitlab-ci.yml" target="_blank" rel="noopener"><code>.gitlab-ci.yml</code></a> ให้ SSH เข้า server แล้วรัน <code>docker compose up -d --build</code> ทุกครั้งที่ push เข้า branch main</li>
         <li><strong>แบบที่ 2 Manual</strong> — SSH เข้า server เอง แล้ว <code>git pull</code> ตามด้วย <code>docker compose up -d --build</code></li>
       </ul>
       <div class="callout danger">
@@ -658,11 +658,11 @@ git push</code></pre>
       <h2><span class="step-no">10</span>ใช้ code ซ้ำสำหรับสาย/กลุ่มอื่น (เช่น ม.6)</h2>
       <p>repo <code>head-project</code> เป็น <strong>public</strong> บน GitLab — หัวกลุ่มสายอื่นเปิดดู/copy โค้ดได้เลยไม่ต้องขอสิทธิ์ ไม่ต้อง fork ก็ได้ (สร้าง repo ใหม่ของตัวเองแล้ว copy ไฟล์ 5 ไฟล์นี้ไปวางตรงๆ):</p>
       <ul>
-        <li><a href="https://gitlab.com/leotawee/head-project/-/blob/main/Dockerfile" target="_blank" rel="noopener"><code>Dockerfile</code></a> — เหมือนกันทุก track ไม่ต้องแก้</li>
-        <li><a href="https://gitlab.com/leotawee/head-project/-/blob/main/.dockerignore" target="_blank" rel="noopener"><code>.dockerignore</code></a> — เหมือนกันทุก track ไม่ต้องแก้</li>
-        <li><a href="https://gitlab.com/leotawee/head-project/-/blob/main/.gitlab-ci.yml" target="_blank" rel="noopener"><code>.gitlab-ci.yml</code></a> — ไม่ต้องแก้ (deploy path derive จาก <code>$CI_PROJECT_PATH_SLUG</code> ของ repo ตัวเองอัตโนมัติอยู่แล้ว ดู <a href="#s7">ขั้นตอน 7</a>)</li>
-        <li><a href="https://gitlab.com/leotawee/head-project/-/blob/main/docker-compose.yml" target="_blank" rel="noopener"><code>docker-compose.yml</code></a> — <strong>ต้องแก้ 2 จุด</strong> (ดูด้านล่าง)</li>
-        <li><a href="https://gitlab.com/leotawee/head-project/-/blob/main/index.html" target="_blank" rel="noopener"><code>index.html</code></a> — <strong>ต้องแก้ 3 จุด</strong> (ดูด้านล่าง)</li>
+        <li><a href="https://gitlab.com/leotawee/my-project/-/blob/main/Dockerfile" target="_blank" rel="noopener"><code>Dockerfile</code></a> — เหมือนกันทุก track ไม่ต้องแก้</li>
+        <li><a href="https://gitlab.com/leotawee/my-project/-/blob/main/.dockerignore" target="_blank" rel="noopener"><code>.dockerignore</code></a> — เหมือนกันทุก track ไม่ต้องแก้</li>
+        <li><a href="https://gitlab.com/leotawee/my-project/-/blob/main/.gitlab-ci.yml" target="_blank" rel="noopener"><code>.gitlab-ci.yml</code></a> — ไม่ต้องแก้ (deploy path derive จาก <code>$CI_PROJECT_PATH_SLUG</code> ของ repo ตัวเองอัตโนมัติอยู่แล้ว ดู <a href="#s7">ขั้นตอน 7</a>)</li>
+        <li><a href="https://gitlab.com/leotawee/my-project/-/blob/main/docker-compose.yml" target="_blank" rel="noopener"><code>docker-compose.yml</code></a> — <strong>ต้องแก้ 2 จุด</strong> (ดูด้านล่าง)</li>
+        <li><a href="https://gitlab.com/leotawee/my-project/-/blob/main/index.html" target="_blank" rel="noopener"><code>index.html</code></a> — <strong>ต้องแก้ 3 จุด</strong> (ดูด้านล่าง)</li>
       </ul>
 
       <p><strong>ตัวอย่างจริง: สายตรง (9900) → ม.6 (hub 9940, นักเรียน 9941-9965)</strong></p>
